@@ -1,6 +1,7 @@
 // 管理整个项目的API
 import request from './request.js'
 
+
 export default {
   /**
    * 首页API
@@ -50,8 +51,33 @@ export default {
       method: 'get',
       mock: true,
       data: {
-        pageIndex, pageSize
+        pageIndex,
+        pageSize
       }
     })
   },
+
+  searchUser(keyWord: string) {
+    return request({
+      url: '/user/getUserList',
+      method: 'get',
+      mock: true,
+      data: {
+        keyWord
+      }
+    })
+  },
+
+  addUser(config) {
+    return request({
+      url: '/user/createUser',
+      method: 'post',
+      mock: true,
+      data: {
+        config
+      }
+    })
+  },
+
+
 }

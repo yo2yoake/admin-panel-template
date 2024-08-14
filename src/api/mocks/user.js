@@ -1,5 +1,7 @@
 import Mock from 'mockjs'
 
+// 该部分实际上是模拟了后端的一些工作
+
 // get请求从config.url获取参数，post从config.body中获取参数
 function param2Obj(url) {
   const search = url.split('?')[1]
@@ -16,20 +18,19 @@ function param2Obj(url) {
   )
 }
 
+// 生成200条模拟数据
 let List = []
 const count = 200
 
 for (let i = 0; i < count; i++) {
-  List.push(
-    Mock.mock({
-      id: Mock.Random.guid(),
-      name: Mock.Random.cname(),
-      addr: Mock.mock('@county(true)'),
-      'age|18-60': 1,
-      birth: Mock.Random.date(),
-      gender: Mock.Random.integer(0, 1)
-    })
-  )
+  List.push(Mock.mock({
+    id: Mock.Random.guid(),
+    name: Mock.Random.cname(),
+    addr: Mock.mock('@county(true)'),
+    'age|18-60': 1,
+    birth: Mock.Random.date(),
+    gender: Mock.Random.integer(0, 1)
+  }))
 }
 
 /**
@@ -39,16 +40,15 @@ for (let i = 0; i < count; i++) {
 export default {
   /**
    * 获取列表
-   * 要带参数 name, page, limit; name可以不填, page,limit有默认值。
-   * @return {{code: number, count: number, data: *[]}}
    */
   getUserList: (config) => {
-    const {pageIndex = 1, pageSize = 20} = param2Obj(config.url)
-    const mockList = List
+    const {keyWord, pageIndex = 1, pageSize = 20} = param2Obj(config.url)
+    const mockList = List.filter(user => {
+      return !(keyWord && user.name.indexOf(keyWord) === -1 && user.addr.indexOf(keyWord) === -1);
+    })
     const pageList = mockList.filter((item, index) => {
       return (index < pageSize * pageIndex) && (index >= pageSize * (pageIndex - 1))
     })
-    console.log(pageList)
     return {
       code: 200,
       data: {
@@ -61,22 +61,19 @@ export default {
 
   /**
    * 增加用户
-   * @param name, addr, age, birth, sex
-   * @return {{code: number, data: {message: string}}}
    */
-  createUser: config => {
-    const {name, addr, age, birth, sex} = JSON.parse(config.body)
-    console.log(JSON.parse(config.body))
+  createUser: (config) => {
+    const {userName, userAge, userGender, userBirth, userAddress} = JSON.parse(config.body).config
     List.unshift({
       id: Mock.Random.guid(),
-      name: name,
-      addr: addr,
-      age: age,
-      birth: birth,
-      sex: sex
+      name: userName,
+      addr: userAddress,
+      age: userAge,
+      birth: userBirth,
+      gender: userGender
     })
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: '添加成功'
       }
@@ -86,8 +83,6 @@ export default {
 
   /**
    * 删除用户
-   * @param id
-   * @return {*}
    */
   deleteUser: config => {
     const {id} = param2Obj(config.url)
@@ -99,7 +94,7 @@ export default {
     } else {
       List = List.filter(u => u.id !== id)
       return {
-        code: 20000,
+        code: 200,
         message: '删除成功'
       }
     }
@@ -108,8 +103,6 @@ export default {
 
   /**
    * 批量删除
-   * @param config
-   * @return {{code: number, data: {message: string}}}
    */
   batchremove: config => {
     let {ids} = param2Obj(config.url)
@@ -126,8 +119,6 @@ export default {
 
   /**
    * 修改用户
-   * @param id, name, addr, age, birth, sex
-   * @return {{code: number, data: {message: string}}}
    */
   updateUser: config => {
     const {id, name, addr, age, birth, sex} = JSON.parse(config.body)

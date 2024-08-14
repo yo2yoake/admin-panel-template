@@ -9,3 +9,4 @@ Mock.mock(/home\/getUserActivityData/, 'get', homeApi.getUserActivityData)
 Mock.mock(/home\/getSalesShareData/, 'get', homeApi.getSalesShareData)
 
 Mock.mock(/user\/getUserList/, 'get', userApi.getUserList)
+Mock.mock(/user\/createUser/, 'post', userApi.createUser)
