@@ -1,6 +1,6 @@
 import Mock from 'mockjs'
 import homeApi from './mocks/home'
-import userApi from './mocks/user'
+import userApi from './mocks/user.js'
 
 Mock.mock(/home\/getSalesData/, 'get', homeApi.getSalesData)
 Mock.mock(/home\/getOrderData/, 'get', homeApi.getOrderData)

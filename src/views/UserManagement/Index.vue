@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, type Ref, ref, watch} from "vue";
+import {onMounted, reactive, type Ref, ref} from "vue";
 import {useAsideStore} from "@/store/aside";
 import {storeToRefs} from "pinia";
 import api from "@/api/api";
@@ -124,7 +124,7 @@ const tablePageConfig: TablePageConfigInter = reactive({
 })
 
 async function getUserList(config: TablePageConfigInter) {
-  const res = await api.getUserList(config.pageIndex, config.pageSize);
+  const res = await api.getUserList('', config.pageIndex, config.pageSize);
   userList.value = await res.data.list
   tablePageConfig.totalItems = res.data.count
 }
@@ -177,6 +177,7 @@ function handleEdit(user: UserDataInter) {
 
 async function handleConfirm() {
   const res = await (dialogState.isEditing ? api.editUser(userInfoForm) : api.addUser(userInfoForm))
+  console.log(res)
   if (res.code === 200) await getUserList(tablePageConfig)
 
   handleCloseDialog()
@@ -206,7 +207,7 @@ function handleCascaderChange(arr: Array<string>) {
 const searchKey: Ref<string> = ref('')
 
 async function handleSearch() {
-  const res = await api.searchUser(searchKey.value)
+  const res = await api.getUserList(searchKey.value, 1, tablePageConfig.pageSize)
   userList.value = res.data.list
   tablePageConfig.totalItems = res.data.count
 }
@@ -215,7 +216,7 @@ async function handleSearch() {
  * 功能：删除用户
  */
 async function handleDelete(user: UserDataInter) {
-  await api.deleteUser(user.userId)
+  if (user.userId != null) await api.deleteUser(user.userId)
   await getUserList(tablePageConfig)
 }
 

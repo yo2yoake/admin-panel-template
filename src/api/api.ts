@@ -46,25 +46,15 @@ export default {
   /**
    * 用户管理页面API
    */
-  getUserList(pageIndex: number, pageSize: number) {
+  getUserList(keyWord: string, pageIndex: number, pageSize: number) {
     return request({
       url: '/user/getUserList',
       method: 'get',
       isMock: true,
-      data: {
+      params: {
+        keyWord,
         pageIndex,
         pageSize
-      }
-    })
-  },
-
-  searchUser(keyWord: string) {
-    return request({
-      url: '/user/getUserList',
-      method: 'get',
-      isMock: true,
-      data: {
-        keyWord
       }
     })
   },

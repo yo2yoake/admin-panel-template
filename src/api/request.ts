@@ -3,10 +3,6 @@ import axios from 'axios'
 import config from '@/config'
 import {ElMessage} from 'element-plus'
 
-/**
- * TODO: 使用TS二次封装Axios
- */
-
 const NETWORK_ERROR: string = '网络请求错误'
 
 // 创建Axios实例对象
@@ -14,12 +10,12 @@ const service = axios.create({
   baseURL: config.baseApi
 })
 
-// 请求之前
+// 请求拦截器
 service.interceptors.request.use((req) => {
   return req
 })
 
-// 请求之后
+// 响应拦截器
 service.interceptors.response.use((res) => {
   const {status, data, statusText} = res
   if (status === 200) {
@@ -30,30 +26,24 @@ service.interceptors.response.use((res) => {
   }
 })
 
-// Axios封装
-// 该部分用于处理requestOption
-function request(requestOption: {
+// Axios封装.该部分用于处理requestOption
+interface RequestOptionInter {
   url: string,
   method: 'get' | 'post',
   isMock: boolean,
   data?: Object,
   params?: Object
-}) {
-  // 若method没有值，则赋默认值get
-  requestOption.method = requestOption.method || 'get'
-  // 如果method是'get'，有参数则传参数
-  if (requestOption.method === 'get') {
-    requestOption.params = requestOption.data
-  }
+}
 
+function request(requestOption: RequestOptionInter) {
   // 从config文件中判断全局是否Mock
-  let isMock = config.isMock
-  // 从requestOption中判断请求该api时是否Mock：若未说明请求时是否mock，则以config配置为准；若说明了请求时是否mock，则以本次requestOption为准
+  let isMock: boolean = config.isMock
+  // 从requestOption中判断请求该api时是否Mock：若未说明请求时是否mock，则以config为准；若说明了请求时是否mock，则以本次requestOption为准
   if (typeof requestOption.isMock !== 'undefined') {
     isMock = requestOption.isMock
   }
 
-  // 处理线上环境
+  // 处理线上环境：如果当前为生产环境，则使用baseApi；若为开发或测试环境，则依据config进行判断
   if (config.env === 'prod') {
     service.defaults.baseURL = config.baseApi
   } else {
