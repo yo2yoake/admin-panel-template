@@ -13,8 +13,7 @@ interface EnvConfigInter {
 }
 
 // 定义配置
-type Env = 'development' | 'test' | 'prod'
-const env: Env = (import.meta.env.MODE as Env) || 'prod'
+const env: 'development' | 'test' | 'prod' = (import.meta.env.MODE as ('development' | 'test' | 'prod')) || 'prod'
 
 const EnvConfig: EnvConfigInter = {
   development: {

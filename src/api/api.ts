@@ -1,5 +1,6 @@
 // 管理整个项目的API
-import request from './request.js'
+import request from './request'
+import type {UserDataInter} from "@/types";
 
 
 export default {
@@ -49,7 +50,7 @@ export default {
     return request({
       url: '/user/getUserList',
       method: 'get',
-      mock: true,
+      isMock: true,
       data: {
         pageIndex,
         pageSize
@@ -61,23 +62,52 @@ export default {
     return request({
       url: '/user/getUserList',
       method: 'get',
-      mock: true,
+      isMock: true,
       data: {
         keyWord
       }
     })
   },
 
-  addUser(config) {
+  addUser(userData: UserDataInter) {
     return request({
       url: '/user/createUser',
       method: 'post',
-      mock: true,
+      isMock: true,
       data: {
-        config
+        userName: userData.userName,
+        userAge: userData.userAge,
+        userGender: userData.userGender,
+        userBirth: userData.userBirth,
+        userAddress: userData.userAddress
       }
     })
   },
 
+  editUser(userData: UserDataInter) {
+    return request({
+      url: '/user/updateUser',
+      method: 'post',
+      isMock: true,
+      data: {
+        userId: userData.userId,
+        userName: userData.userName,
+        userAge: userData.userAge,
+        userGender: userData.userGender,
+        userBirth: userData.userBirth,
+        userAddress: userData.userAddress
+      }
+    })
+  },
 
+  deleteUser(userId: string) {
+    return request({
+      url: '/user/deleteUser',
+      method: 'post',
+      isMock: true,
+      data: {
+        userId
+      }
+    })
+  }
 }

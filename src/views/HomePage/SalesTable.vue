@@ -21,7 +21,7 @@ interface SalesDataInter {
 }
 
 let salesData: Array<SalesDataInter> = reactive([
-  { name: 'Loading', todayBuy: 0, monthBuy: 0, totalBuy: 0, }
+  { userName: 'Loading', todayBuy: 0, monthBuy: 0, totalBuy: 0, }
 ])
 
 async function getSalesData() {

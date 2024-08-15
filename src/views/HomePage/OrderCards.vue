@@ -24,7 +24,7 @@ interface OrderDataInter {
 }
 
 let orderData: Array<OrderDataInter> = reactive([
-  {name: 'Loading', value: 0, icon: "SuccessFilled", color: "#2ec7c9"}
+  {userName: 'Loading', value: 0, icon: "SuccessFilled", color: "#2ec7c9"}
 ])
 
 async function getOrderData() {

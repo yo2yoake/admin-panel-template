@@ -41,7 +41,7 @@ function handleSalesData(salesTrendData: SalesTrendDataInter): Array<SalesDataSe
   let salesDataSeries: Array<SalesDataSeriesItem> = []
   Object.keys(salesTrendData.salesData[0]).forEach((key) => {
     salesDataSeries.push({
-      name: key,
+      userName: key,
       data: salesTrendData.salesData.map((item) => item[key as (keyof SalesTrendItemInter)]),
       type: "line",
     })

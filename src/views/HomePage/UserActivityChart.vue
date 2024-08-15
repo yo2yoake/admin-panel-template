@@ -94,12 +94,12 @@ onMounted(async () => {
 
   let userActivitySeries: UserActivitySeries = [
     {
-      name: "新增用户",
+      userName: "新增用户",
       data: userActivityData.map((item) => item.newUser),
       type: "bar",
     },
     {
-      name: "活跃用户",
+      userName: "活跃用户",
       data: userActivityData.map((item) => item.activeUser),
       type: "bar",
     },

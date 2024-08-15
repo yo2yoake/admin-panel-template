@@ -10,14 +10,14 @@ export const useAsideStore = defineStore('AsideStore', () => {
   const menuList: Array<MenuWithoutChildrenInter | MenuWithChildrenInter> = [
     {
       path: '/',
-      name: 'home',
+      userName: 'home',
       label: '首页',
       icon: 'HomeFilled',
       url: 'Home/Home'
     },
     {
       path: '/UserManagement',
-      name: 'user',
+      userName: 'user',
       label: '用户管理',
       icon: 'UserFilled',
       url: 'User/User'
@@ -29,14 +29,14 @@ export const useAsideStore = defineStore('AsideStore', () => {
       children: [
         {
           path: '/more1',
-          name: 'more1',
+          userName: 'more1',
           label: '更多-1',
           icon: 'setting',
           url: 'More/One'
         },
         {
           path: '/more2',
-          name: 'more2',
+          userName: 'more2',
           label: '更多-2',
           icon: 'setting',
           url: 'More/Two'
@@ -63,7 +63,7 @@ export const useAsideStore = defineStore('AsideStore', () => {
 
   function clickMenu(item: MenuWithoutChildrenInter): void {
     // 路由跳转
-    router.push({name: item.name})
+    router.push({userName: item.name})
     // 面包屑
     useHeaderStore().updateBreadcrumb(item)
   }

@@ -14,3 +14,14 @@ export interface MenuWithChildrenInter {
   path: string
   children: Array<MenuWithoutChildrenInter>
 }
+
+// 用户管理模块
+
+export interface UserDataInter {
+  userId?: string,
+  userName: string,
+  userAddress: string,
+  userAge: number,
+  userBirth: string,
+  userGender: 0 | 1
+}

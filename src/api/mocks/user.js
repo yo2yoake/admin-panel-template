@@ -24,12 +24,12 @@ const count = 200
 
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
-    id: Mock.Random.guid(),
-    name: Mock.Random.cname(),
-    addr: Mock.mock('@county(true)'),
-    'age|18-60': 1,
-    birth: Mock.Random.date(),
-    gender: Mock.Random.integer(0, 1)
+    userId: Mock.Random.guid(),
+    userName: Mock.Random.cname(),
+    userAddress: Mock.mock('@county(true)'),
+    'userAge|18-60': 1,
+    userBirth: Mock.Random.date(),
+    userGender: Mock.Random.integer(0, 1)
   }))
 }
 
@@ -44,7 +44,7 @@ export default {
   getUserList: (config) => {
     const {keyWord, pageIndex = 1, pageSize = 20} = param2Obj(config.url)
     const mockList = List.filter(user => {
-      return !(keyWord && user.name.indexOf(keyWord) === -1 && user.addr.indexOf(keyWord) === -1);
+      return !(keyWord && user.userName.indexOf(keyWord) === -1 && user.userAddress.indexOf(keyWord) === -1);
     })
     const pageList = mockList.filter((item, index) => {
       return (index < pageSize * pageIndex) && (index >= pageSize * (pageIndex - 1))
@@ -63,14 +63,14 @@ export default {
    * 增加用户
    */
   createUser: (config) => {
-    const {userName, userAge, userGender, userBirth, userAddress} = JSON.parse(config.body).config
+    const {userName, userAge, userGender, userBirth, userAddress} = JSON.parse(config.body)
     List.unshift({
-      id: Mock.Random.guid(),
-      name: userName,
-      addr: userAddress,
-      age: userAge,
-      birth: userBirth,
-      gender: userGender
+      userId: Mock.Random.guid(),
+      userName,
+      userAddress,
+      userAge,
+      userBirth,
+      userGender
     })
     return {
       code: 200,
@@ -85,14 +85,14 @@ export default {
    * 删除用户
    */
   deleteUser: config => {
-    const {id} = param2Obj(config.url)
-    if (!id) {
+    const {userId} = JSON.parse(config.body)
+    if (!userId) {
       return {
         code: -999,
         message: '参数不正确'
       }
     } else {
-      List = List.filter(u => u.id !== id)
+      List = List.filter((user) => user.userId !== userId)
       return {
         code: 200,
         message: '删除成功'
@@ -109,7 +109,7 @@ export default {
     ids = ids.split(',')
     List = List.filter(u => !ids.includes(u.id))
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: '批量删除成功'
       }
@@ -120,21 +120,20 @@ export default {
   /**
    * 修改用户
    */
-  updateUser: config => {
-    const {id, name, addr, age, birth, sex} = JSON.parse(config.body)
-    const sex_num = parseInt(sex)
-    List.some(u => {
-      if (u.id === id) {
-        u.name = name
-        u.addr = addr
-        u.age = age
-        u.birth = birth
-        u.sex = sex_num
+  updateUser: (config) => {
+    const {userId, userName, userAddress, userAge, userBirth, userGender} = JSON.parse(config.body)
+    List.some(user => {
+      if (user.userId === userId) {
+        user.userName = userName
+        user.userAddress = userAddress
+        user.userAge = userAge
+        user.userBirth = userBirth
+        user.userGender = userGender
         return true
       }
     })
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: '编辑成功'
       }

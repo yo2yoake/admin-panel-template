@@ -517,8 +517,8 @@ for (let i = 0; i < count; i++) {
 export default {
   /**
    * 获取列表
-   * 要带参数 name, page, limt; name可以不填, page,limit有默认值。
-   * @param name, page, limit
+   * 要带参数 userName, page, limt; name可以不填, page,limit有默认值。
+   * @param userName, page, limit
    * @return {{code: number, count: number, data: *[]}}
    */
   getUserList: config => {
@@ -538,7 +538,7 @@ export default {
   },
   /**
    * 增加用户
-   * @param name, addr, age, birth, sex
+   * @param userName, userAddress, userAge, userBirth, sex
    * @return {{code: number, data: {message: string}}}
    */
   createUser: config => {
@@ -597,7 +597,7 @@ export default {
   },
   /**
    * 修改用户
-   * @param id, name, addr, age, birth, sex
+   * @param userId, userName, userAddress, userAge, userBirth, sex
    * @return {{code: number, data: {message: string}}}
    */
   updateUser: config => {
