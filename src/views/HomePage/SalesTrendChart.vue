@@ -10,7 +10,7 @@ import * as ECharts from 'echarts'
 import api from "@/api/api"
 
 // 类型
-interface SalesTrendItemInter {
+interface SalesTrendItem {
   "Apple": number,
   "Xiaomi": number,
   "HUAWEI": number,
@@ -19,9 +19,9 @@ interface SalesTrendItemInter {
   "Sumsang": number
 }
 
-interface SalesTrendDataInter {
+interface SalesTrendData {
   date: Array<string>
-  salesData: Array<SalesTrendItemInter>
+  salesData: Array<SalesTrendItem>
 }
 
 interface SalesDataSeriesItem {
@@ -31,18 +31,18 @@ interface SalesDataSeriesItem {
 }
 
 // 定义数据
-let salesTrendData: SalesTrendDataInter = {
+let salesTrendData: SalesTrendData = {
   date: [],
   salesData: []
 }
 
 // 定义方法
-function handleSalesData(salesTrendData: SalesTrendDataInter): Array<SalesDataSeriesItem> {
+function handleSalesData(salesTrendData: SalesTrendData): Array<SalesDataSeriesItem> {
   let salesDataSeries: Array<SalesDataSeriesItem> = []
   Object.keys(salesTrendData.salesData[0]).forEach((key) => {
     salesDataSeries.push({
-      userName: key,
-      data: salesTrendData.salesData.map((item) => item[key as (keyof SalesTrendItemInter)]),
+      name: key,
+      data: salesTrendData.salesData.map((item) => item[key as (keyof SalesTrendItem)]),
       type: "line",
     })
   })

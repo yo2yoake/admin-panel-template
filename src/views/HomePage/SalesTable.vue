@@ -13,15 +13,15 @@
 import { onMounted, reactive } from 'vue'
 import api from '@/api/api'
 
-interface SalesDataInter {
+interface SalesData {
   name: string,
   todayBuy: number,
   monthBuy: number,
   totalBuy: number
 }
 
-let salesData: Array<SalesDataInter> = reactive([
-  { userName: 'Loading', todayBuy: 0, monthBuy: 0, totalBuy: 0, }
+let salesData: Array<SalesData> = reactive([
+  { name: 'Loading', todayBuy: 0, monthBuy: 0, totalBuy: 0, }
 ])
 
 async function getSalesData() {

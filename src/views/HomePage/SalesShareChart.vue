@@ -10,12 +10,12 @@ import { onMounted, getCurrentInstance } from 'vue'
 import * as ECharts from 'echarts'
 
 // 接口
-interface EachSalesShareInter {
+interface EachSalesShare {
   name: string,
   value: number
 }
 
-type SalesShare = Array<EachSalesShareInter>
+type SalesShare = Array<EachSalesShare>
 
 // 数据
 let salesShare: SalesShare = []

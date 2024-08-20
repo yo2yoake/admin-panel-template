@@ -1,25 +1,37 @@
 <template>
   <el-aside :width="isCollapse ? '65px' : '200px'">
-    <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" :collapse="isCollapse"
+
+    <el-menu :default-active="activeIndex"
+             class="el-menu-vertical-demo"
+             :collapse="isCollapse"
              :collapse-transition="false">
-      <el-menu-item v-for="item in getMenuWithoutChildren()" :index="item.path" :key="item.path"
+
+      <el-menu-item v-for="item in getSimpleMenu()"
+                    :index="item.path"
+                    :key="item.path"
                     @click="clickMenu(item)">
         <component class="icons" :is="item.icon"></component>
         <span>{{ item.label }}</span>
       </el-menu-item>
-      <el-sub-menu v-for="item in getMenuWithChildren()" :index="item.label" :key="item.path">
+
+      <el-sub-menu v-for="item in getNestedMenu()"
+                   :index="item.label"
+                   :key="item.path">
         <template #title>
           <component class="icons" :is="item.icon"></component>
           <span>{{ item.label }}</span>
         </template>
         <el-menu-item-group title="Group One">
-          <el-menu-item v-for="subItem in item.children" :index="subItem.path" :key="subItem.path"
+          <el-menu-item v-for="subItem in item.children"
+                        :index="subItem.path"
+                        :key="subItem.path"
                         @click="clickMenu(subItem)">
             <component class="icons" :is="subItem.icon"></component>
             <span>{{ subItem.label }}</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
+
     </el-menu>
   </el-aside>
 </template>
@@ -27,10 +39,11 @@
 <script setup lang="ts">
 import {useAsideStore} from "@/store/aside"
 import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
 
 const AsideStore = useAsideStore()
 const {isCollapse, activeIndex} = storeToRefs(AsideStore)
-const {getMenuWithChildren, getMenuWithoutChildren, clickMenu} = AsideStore
+const {getSimpleMenu, getNestedMenu, clickMenu} = AsideStore
 
 </script>
 

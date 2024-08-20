@@ -1,90 +1,83 @@
 import {defineStore} from "pinia"
-import {ref, watch} from "vue"
+import {type Ref, ref, watch} from "vue"
 import {useRouter} from "vue-router"
-import type {MenuWithoutChildrenInter, MenuWithChildrenInter} from "@/types"
+import type {SimpleMenu, NestedMenu, Route} from "@/types"
 import {useHeaderStore} from "@/store/header"
+import type {RouteRecordRaw} from "vue-router"
 
 export const useAsideStore = defineStore('AsideStore', () => {
+  // 获取菜单数据
+  let menuList: Array<SimpleMenu | NestedMenu> = []
 
-  // 定义数据
-  const menuList: Array<MenuWithoutChildrenInter | MenuWithChildrenInter> = [
-    {
-      path: '/',
-      name: 'home',
-      label: '首页',
-      icon: 'HomeFilled',
-      url: 'Home/Home'
-    },
-    {
-      path: '/UserManagement',
-      name: 'user',
-      label: '用户管理',
-      icon: 'UserFilled',
-      url: 'User/User'
-    },
-    {
-      label: '更多',
-      icon: 'MoreFilled',
-      path: '/MoreMenu',
-      children: [
-        {
-          path: '/more1',
-          name: 'more1',
-          label: '更多-1',
-          icon: 'setting',
-          url: 'More/One'
-        },
-        {
-          path: '/more2',
-          name: 'more2',
-          label: '更多-2',
-          icon: 'setting',
-          url: 'More/Two'
-        }
-      ]
-    }
-  ]
+  function updateMenuList() {
+    menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
+    console.log('当前菜单列表', menuList)
+  }
 
   // 分离有子菜单的菜单和无子菜单的菜单
-  function hasChildren(item: MenuWithChildrenInter | MenuWithoutChildrenInter): item is MenuWithChildrenInter {
-    return (item as MenuWithChildrenInter).children !== undefined
+  function getSimpleMenu(): Array<SimpleMenu> {
+    return menuList.filter((item: SimpleMenu | NestedMenu) => {
+      return (item as NestedMenu).children === undefined
+    }) as Array<SimpleMenu>
   }
 
-  function getMenuWithoutChildren(): Array<MenuWithoutChildrenInter> {
-    return menuList.filter((item) => !hasChildren(item)) as Array<MenuWithoutChildrenInter>
+  function getNestedMenu(): Array<NestedMenu> {
+    return menuList.filter((item: SimpleMenu | NestedMenu) => {
+      return (item as NestedMenu).children !== undefined
+    }) as Array<NestedMenu>
   }
 
-  function getMenuWithChildren(): Array<MenuWithChildrenInter> {
-    return menuList.filter((item) => hasChildren(item)) as Array<MenuWithChildrenInter>
+  // 动态路由
+  const router = useRouter()
+
+  function createRoutes(menu: Array<SimpleMenu>): Array<Route> {
+    const views = import.meta.glob('@/views/**/*.vue')
+    return menu.map((item: SimpleMenu): Route => (
+      {
+        path: item.path,
+        name: item.name,
+        component: views[`/src/views/${item.url}.vue`],
+      }
+    ))
+  }
+
+  function updateRouter() {
+    const routeList: Array<Route> = [
+      ...createRoutes(getSimpleMenu()),
+      ...createRoutes(getNestedMenu().flatMap((item: NestedMenu): Array<SimpleMenu> => item.children))
+    ]
+    routeList.forEach((route: Route) => router.addRoute('main', route as RouteRecordRaw))
+    sessionStorage.setItem('routeList', JSON.stringify(routeList))
+    console.log('当前路由', router.getRoutes())
   }
 
   // 路由跳转和面包屑功能
-  const router = useRouter()
-
-  function clickMenu(item: MenuWithoutChildrenInter): void {
+  function clickMenu(item: SimpleMenu): void {
     // 路由跳转
-    router.push({name: item.name})
+    router.push({name: item.name}).then()
     // 面包屑
     useHeaderStore().updateBreadcrumb(item)
   }
 
   // 侧边栏的展开与折叠
-  const isCollapse = ref(false)
+  const isCollapse: Ref<boolean> = ref(false)
 
   function updateIsCollapse(): void {
     isCollapse.value = !isCollapse.value
   }
 
   // 处理侧边栏菜单默认active
-  const activeIndex = ref(localStorage.getItem('activeIndex') || '/')
+  const activeIndex: Ref<string> = ref(sessionStorage.getItem('activeIndex') || '/home')
 
   watch(activeIndex, (newValue: string) => {
-    localStorage.setItem('activeIndex', newValue)
+    sessionStorage.setItem('activeIndex', newValue)
   })
 
   return {
-    getMenuWithChildren,
-    getMenuWithoutChildren,
+    updateMenuList,
+    getSimpleMenu,
+    getNestedMenu,
+    updateRouter,
     clickMenu,
     activeIndex,
     isCollapse,

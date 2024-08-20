@@ -10,12 +10,11 @@ import { onMounted, getCurrentInstance } from 'vue'
 import * as ECharts from 'echarts'
 
 // 接口
-interface DailyUserActivityInter {
+interface DailyUserActivity {
   date: string,
   newUser: number,
   activeUser: number
 }
-type UserActivityDataInter = Array<DailyUserActivityInter>
 
 interface UserActivitySeriesItem {
   name: '新增用户' | '活跃用户',
@@ -23,13 +22,11 @@ interface UserActivitySeriesItem {
   type: 'bar'
 }
 
-type UserActivitySeries = Array<UserActivitySeriesItem>
-
 // 数据
-let userActivityData: UserActivityDataInter = []
+let userActivityData: Array<DailyUserActivity> = []
 
 // 方法
-function chartOption(xAxisData: Array<string>, series: UserActivitySeries) {
+function chartOption(xAxisData: Array<string>, series: Array<UserActivitySeriesItem>) {
   return {
     title: {
       text: '用户活跃',
@@ -92,14 +89,14 @@ onMounted(async () => {
 
   let date: Array<string> = userActivityData.map((item) => item.date)
 
-  let userActivitySeries: UserActivitySeries = [
+  let userActivitySeries: Array<UserActivitySeriesItem> = [
     {
-      userName: "新增用户",
+      name: "新增用户",
       data: userActivityData.map((item) => item.newUser),
       type: "bar",
     },
     {
-      userName: "活跃用户",
+      name: "活跃用户",
       data: userActivityData.map((item) => item.activeUser),
       type: "bar",
     },

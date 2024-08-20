@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 import homeApi from './mocks/home'
-import userApi from './mocks/user.js'
+import userApi from './mocks/user'
+import permissionApi from './mocks/permission'
 
 Mock.mock(/home\/getSalesData/, 'get', homeApi.getSalesData)
 Mock.mock(/home\/getOrderData/, 'get', homeApi.getOrderData)
@@ -12,3 +13,6 @@ Mock.mock(/user\/getUserList/, 'get', userApi.getUserList)
 Mock.mock(/user\/createUser/, 'post', userApi.createUser)
 Mock.mock(/user\/updateUser/, 'post', userApi.updateUser)
 Mock.mock(/user\/deleteUser/, 'post', userApi.deleteUser)
+
+Mock.mock(/permission\/getMenuList/, 'get', permissionApi.getMenuList)
+

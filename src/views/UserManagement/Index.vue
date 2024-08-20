@@ -95,12 +95,12 @@ import {useAsideStore} from "@/store/aside";
 import {storeToRefs} from "pinia";
 import api from "@/api/api";
 import {pcaTextArr} from 'element-china-area-data'
-import type {UserDataInter} from "@/types";
+import type {UserData} from "@/types";
 
 /**
  * 功能：获取展示用户列表并展示
  */
-const userList: Ref<Array<UserDataInter>> = ref([
+const userList: Ref<Array<UserData>> = ref([
   {
     userId: "0",
     userName: "NoData",
@@ -152,7 +152,7 @@ const dialogState: {
   isEditing: false,
 })
 
-const userInfoForm: UserDataInter = reactive({
+const userInfoForm: UserData = reactive({
   userId: '',
   userName: '',
   userAge: 0,
@@ -168,7 +168,7 @@ function handleAdd() {
 
 let userAddressArray: Array<string> = reactive(['', '', ''])
 
-function handleEdit(user: UserDataInter) {
+function handleEdit(user: UserData) {
   dialogState.isVisible = true
   dialogState.isEditing = true
   userAddressArray = user.userAddress.split(' ')
@@ -215,7 +215,7 @@ async function handleSearch() {
 /**
  * 功能：删除用户
  */
-async function handleDelete(user: UserDataInter) {
+async function handleDelete(user: UserData) {
   if (user.userId != null) await api.deleteUser(user.userId)
   await getUserList(tablePageConfig)
 }
@@ -231,7 +231,7 @@ const {activeIndex} = storeToRefs(useAsideStore())
  */
 onMounted(async () => {
   // 功能：侧边栏菜单动态Active
-  activeIndex.value = '/UserManagement'
+  activeIndex.value = '/user'
 
   // 功能：获取用户列表并展示
   await getUserList(tablePageConfig)

@@ -16,15 +16,15 @@
 import {onMounted, reactive} from 'vue'
 import api from '@/api/api'
 
-interface OrderDataInter {
+interface OrderData {
   name: '今日支付订单' | '今日收藏订单' | '今日未支付订单' | '本月支付订单' | '本月收藏订单' | '本月未支付订单' | 'Loading',
   value: number,
   icon: 'SuccessFilled' | 'StarFilled' | 'GoodsFilled',
   color: string
 }
 
-let orderData: Array<OrderDataInter> = reactive([
-  {userName: 'Loading', value: 0, icon: "SuccessFilled", color: "#2ec7c9"}
+const orderData: Array<OrderData> = reactive([
+  {name: 'Loading', value: 0, icon: "SuccessFilled", color: "#2ec7c9"}
 ])
 
 async function getOrderData() {

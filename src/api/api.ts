@@ -1,6 +1,6 @@
 // 管理整个项目的API
 import request from './request'
-import type {UserDataInter} from "@/types";
+import type {UserData} from "@/types";
 
 
 export default {
@@ -58,8 +58,7 @@ export default {
       }
     })
   },
-
-  addUser(userData: UserDataInter) {
+  addUser(userData: UserData) {
     return request({
       url: '/user/createUser',
       method: 'post',
@@ -73,8 +72,7 @@ export default {
       }
     })
   },
-
-  editUser(userData: UserDataInter) {
+  editUser(userData: UserData) {
     return request({
       url: '/user/updateUser',
       method: 'post',
@@ -89,7 +87,6 @@ export default {
       }
     })
   },
-
   deleteUser(userId: string) {
     return request({
       url: '/user/deleteUser',
@@ -97,6 +94,21 @@ export default {
       isMock: true,
       data: {
         userId
+      }
+    })
+  },
+
+  /**
+   * 登录页面]API
+   */
+  getMenuList(userName: string, userPassword: string) {
+    return request({
+      url: '/permission/getMenuList',
+      method: 'get',
+      isMock: true,
+      data: {
+        userName,
+        userPassword
       }
     })
   }

@@ -31,15 +31,17 @@ import OrderCards from '@/views/HomePage/OrderCards.vue'
 import SalesTrendChart from '@/views/HomePage/SalesTrendChart.vue'
 import UserActivityChart from '@/views/HomePage/UserActivityChart.vue'
 import SalesShareChart from '@/views/HomePage/SalesShareChart.vue'
-import {onMounted} from "vue";
-import {useAsideStore} from "@/store/aside";
-import {storeToRefs} from "pinia";
+import {onMounted} from "vue"
+import {useAsideStore} from "@/store/aside"
+import {storeToRefs} from "pinia"
+import {useRouter} from "vue-router";
 
-const {activeIndex} = storeToRefs(useAsideStore());
+const {activeIndex} = storeToRefs(useAsideStore())
 
 onMounted(() => {
-  activeIndex.value = '/'
+  activeIndex.value = '/home'
 })
+
 
 </script>
 
