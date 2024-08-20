@@ -34,13 +34,13 @@ import SalesShareChart from '@/views/HomePage/SalesShareChart.vue'
 import {onMounted} from "vue"
 import {useAsideStore} from "@/store/aside"
 import {storeToRefs} from "pinia"
-import {useRouter} from "vue-router";
 
 const {activeIndex} = storeToRefs(useAsideStore())
 
 onMounted(() => {
   activeIndex.value = '/home'
 })
+
 
 
 </script>

@@ -1,9 +1,10 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
+import {useAsideStore} from "@/store/aside";
 
 const routes = [
   {
     path: '/',
-    // redirect: '/home',
+    redirect: '/home',
     name: 'main',
     component: () => import('@/views/Main.vue'),
     children: JSON.parse(sessionStorage.getItem('routeList') || '[]')
@@ -15,7 +16,22 @@ const routes = [
   }
 ]
 
-export default createRouter({
+const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
+let load: number = 0
+router.beforeEach((to, from, next) => {
+  if (load === 0 && useAsideStore().menuList) {
+    load++
+    useAsideStore().updateRouter()
+    next({...to, replace: true})
+    console.log(load)
+  } else {
+    next()
+  }
+})
+
+
+export default router

@@ -11,7 +11,6 @@ export const useAsideStore = defineStore('AsideStore', () => {
 
   function updateMenuList() {
     menuList = JSON.parse(sessionStorage.getItem('menuList') || '[]')
-    console.log('当前菜单列表', menuList)
   }
 
   // 分离有子菜单的菜单和无子菜单的菜单
@@ -48,13 +47,12 @@ export const useAsideStore = defineStore('AsideStore', () => {
     ]
     routeList.forEach((route: Route) => router.addRoute('main', route as RouteRecordRaw))
     sessionStorage.setItem('routeList', JSON.stringify(routeList))
-    console.log('当前路由', router.getRoutes())
   }
 
   // 路由跳转和面包屑功能
   function clickMenu(item: SimpleMenu): void {
     // 路由跳转
-    router.push({name: item.name}).then()
+    router.push({name: item.name})
     // 面包屑
     useHeaderStore().updateBreadcrumb(item)
   }
@@ -74,6 +72,7 @@ export const useAsideStore = defineStore('AsideStore', () => {
   })
 
   return {
+    menuList,
     updateMenuList,
     getSimpleMenu,
     getNestedMenu,

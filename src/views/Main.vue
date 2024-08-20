@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import CommonHeader from '@/components/CommenHeader.vue'
 import CommonAside from '@/components/CommenAside.vue'
+
 </script>
 
 <style lang="less" scoped>
