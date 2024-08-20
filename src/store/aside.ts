@@ -57,6 +57,13 @@ export const useAsideStore = defineStore('AsideStore', () => {
     useHeaderStore().updateBreadcrumb(item)
   }
 
+  function clearMenuList(){
+    sessionStorage.removeItem('menuList')
+    sessionStorage.removeItem('routeList')
+    updateMenuList()
+    updateRouter()
+  }
+
   // 侧边栏的展开与折叠
   const isCollapse: Ref<boolean> = ref(false)
 
@@ -78,8 +85,9 @@ export const useAsideStore = defineStore('AsideStore', () => {
     getNestedMenu,
     updateRouter,
     clickMenu,
-    activeIndex,
+    clearMenuList,
     isCollapse,
     updateIsCollapse,
+    activeIndex,
   }
 })

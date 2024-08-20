@@ -9,7 +9,7 @@ const loginForm = reactive({
   userPassword: 'admin'
 })
 
-async function loginUser() {
+async function handleLogin() {
   const res = await api.getMenuList(loginForm.userName, loginForm.userPassword)
   const AsideStore = useAsideStore()
 
@@ -37,7 +37,7 @@ async function loginUser() {
                 placeholder="请输入密码"
                 v-model="loginForm.userPassword"/>
     </el-form-item>
-    <el-button type="primary" @click="loginUser">登录</el-button>
+    <el-button type="primary" @click="handleLogin">登录</el-button>
   </el-form>
 </template>
 

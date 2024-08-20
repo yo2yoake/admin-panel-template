@@ -28,7 +28,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click="handleLogout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -40,10 +40,28 @@
 import {ArrowRight, Menu} from "@element-plus/icons-vue"
 import {useAsideStore} from "@/store/aside"
 import {useHeaderStore} from '@/store/header'
+import router from "@/router";
+import type {RouteRecordNameGeneric} from "vue-router";
 
 function getUserProfilePath(user: string): string {
   return new URL(`../assets/images/${user}.jpg`, import.meta.url).href
 }
+
+function handleLogout() {
+  // 侧边栏动态active
+  useAsideStore().activeIndex = ''
+
+  // 跳转至登录页面并清除动态路由
+  useAsideStore().clearMenuList()
+  router.push({name: 'login'})
+  const dynamicRoute = router.getRoutes().filter((route) => {
+    return (route.name !== 'main' && route.name !== 'login')
+  })
+  dynamicRoute.forEach((route) => {
+    router.removeRoute(route.name as NonNullable<RouteRecordNameGeneric>)
+  })
+}
+
 
 </script>
 

@@ -39,7 +39,6 @@
 <script setup lang="ts">
 import {useAsideStore} from "@/store/aside"
 import {storeToRefs} from "pinia";
-import {onMounted} from "vue";
 
 const AsideStore = useAsideStore()
 const {isCollapse, activeIndex} = storeToRefs(AsideStore)

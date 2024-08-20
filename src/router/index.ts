@@ -22,7 +22,7 @@ const router = createRouter({
 })
 
 let load: number = 0
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   if (load === 0 && useAsideStore().menuList) {
     load++
     useAsideStore().updateRouter()
@@ -32,6 +32,5 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-
 
 export default router
